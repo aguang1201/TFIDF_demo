@@ -12,6 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
+from xgboost.sklearn import XGBClassifier
 
 # 选取下面的8类
 selected_categories = [
@@ -119,3 +120,10 @@ text_clf = Pipeline([('tfidf', TfidfVectorizer(max_features=10000)),
 text_clf = text_clf.fit(train_texts, train_labels)
 predicted = text_clf.predict(test_texts)
 print("DecisionTreeClassifier准确率为：", np.mean(predicted == test_labels))
+
+#XGBClassifier
+text_clf = Pipeline([('tfidf', TfidfVectorizer(max_features=10000)),
+                     ('clf', XGBClassifier())])
+text_clf = text_clf.fit(train_texts, train_labels)
+predicted = text_clf.predict(test_texts)
+print("XGBClassifier准确率为：", np.mean(predicted == test_labels))
