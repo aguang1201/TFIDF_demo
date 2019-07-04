@@ -123,7 +123,11 @@ print("DecisionTreeClassifier准确率为：", np.mean(predicted == test_labels)
 
 #XGBClassifier
 text_clf = Pipeline([('tfidf', TfidfVectorizer(max_features=10000)),
-                     ('clf', XGBClassifier())])
+                     ('clf', XGBClassifier(learning_rate=0.1, n_estimators=300, max_depth=6,
+                                           min_child_weight=1, gamma=0, subsample=0.8, colsample_bytree=0.8,
+                                           objective='binary:logistic', n_jobs=12, scale_pos_weight=1, seed=1981,
+                                           # tree_method='gpu_hist', gpu_id=0, max_bin=16, predictor='gpu_predictor',
+                                           ))])
 text_clf = text_clf.fit(train_texts, train_labels)
 predicted = text_clf.predict(test_texts)
 print("XGBClassifier准确率为：", np.mean(predicted == test_labels))
