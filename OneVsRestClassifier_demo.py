@@ -9,7 +9,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.multiclass import OneVsRestClassifier
 from nltk.corpus import stopwords
-stop_words = set(stopwords.words('english'))
+import nltk
 from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
@@ -33,7 +33,9 @@ def clean_text(text):
     text = text.strip(' ')
     return text
 
-df = pd.read_csv("train 2.csv", encoding="ISO-8859-1")
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
+df = pd.read_csv("dataset/train_multi_labels.csv", encoding="ISO-8859-1")
 df_toxic = df.drop(['id', 'comment_text'], axis=1)
 counts = []
 categories = list(df_toxic.columns.values)
