@@ -33,7 +33,7 @@ def clean_text(text):
     text = text.strip(' ')
     return text
 
-nltk.download('stopwords')
+# nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 df = pd.read_csv("dataset/train_multi_labels.csv", encoding="ISO-8859-1")
 df_toxic = df.drop(['id', 'comment_text'], axis=1)
@@ -55,38 +55,47 @@ print(X_test.shape)
 # 定义一个朴素贝叶斯工作流，将文本特征提取器和多标签分类器合并在一起
 NB_pipeline = Pipeline([
                 ('tfidf', TfidfVectorizer(stop_words=stop_words)),
-                ('clf', OneVsRestClassifier(MultinomialNB(fit_prior=True, class_prior=None))),
+                ('clf', OneVsRestClassifier(MultinomialNB(), n_jobs=-1)),
             ])
-for category in categories:
-    print('... Processing {}'.format(category))
-    # 用 X_dtm & y训练模型
-    NB_pipeline.fit(X_train, train[category])
-    # 计算测试准确率
-    prediction = NB_pipeline.predict(X_test)
-print('Test accuracy is {}'.format(accuracy_score(test[category], prediction)))
+NB_pipeline.fit(X_train, train[categories])
+score = NB_pipeline.score(X_train, train[categories])
+print(f'MultinomialNB Test score is {score}')
+# for category in categories:
+#     print('... Processing {}'.format(category))
+#     # 用 X_dtm & y训练模型
+#     NB_pipeline.fit(X_train, train[category])
+#     # 计算测试准确率
+#     prediction = NB_pipeline.predict(X_test)
+#     print('Test accuracy is {}'.format(accuracy_score(test[category], prediction)))
 
 # 定义一个SVC工作流，将文本特征提取器和多标签分类器合并在一起
 SVC_pipeline = Pipeline([
                 ('tfidf', TfidfVectorizer(stop_words=stop_words)),
-                ('clf', OneVsRestClassifier(LinearSVC(), n_jobs=1)),
+                ('clf', OneVsRestClassifier(LinearSVC(), n_jobs=-1)),
             ])
-for category in categories:
-    print('... Processing {}'.format(category))
-    # train the model using X_dtm & y
-    SVC_pipeline.fit(X_train, train[category])
-    # compute the testing accuracy
-    prediction = SVC_pipeline.predict(X_test)
-print('Test accuracy is {}'.format(accuracy_score(test[category], prediction)))
+SVC_pipeline.fit(X_train, train[categories])
+score = SVC_pipeline.score(X_train, train[categories])
+print(f'LinearSVC Test score is {score}')
+# for category in categories:
+#     print('... Processing {}'.format(category))
+#     # train the model using X_dtm & y
+#     SVC_pipeline.fit(X_train, train[category])
+#     # compute the testing accuracy
+#     prediction = SVC_pipeline.predict(X_test)
+#     print('Test accuracy is {}'.format(accuracy_score(test[category], prediction)))
 
 # 定义一个逻辑回归工作流，将文本特征提取器和多标签分类器合并在一起
 LogReg_pipeline = Pipeline([
                 ('tfidf', TfidfVectorizer(stop_words=stop_words)),
-                ('clf', OneVsRestClassifier(LogisticRegression(solver='sag'), n_jobs=1)),
+                ('clf', OneVsRestClassifier(LogisticRegression(), n_jobs=-1)),
             ])
-for category in categories:
-    print('... Processing {}'.format(category))
-    # train the model using X_dtm & y
-    LogReg_pipeline.fit(X_train, train[category])
-    # compute the testing accuracy
-    prediction = LogReg_pipeline.predict(X_test)
-print('Test accuracy is {}'.format(accuracy_score(test[category], prediction)))
+LogReg_pipeline.fit(X_train, train[categories])
+score = LogReg_pipeline.score(X_train, train[categories])
+print(f'LogisticRegression Test score is {score}')
+# for category in categories:
+#     print('... Processing {}'.format(category))
+#     # train the model using X_dtm & y
+#     LogReg_pipeline.fit(X_train, train[category])
+#     # compute the testing accuracy
+#     prediction = LogReg_pipeline.predict(X_test)
+#     print('Test accuracy is {}'.format(accuracy_score(test[category], prediction)))
