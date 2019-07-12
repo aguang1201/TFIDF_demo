@@ -42,3 +42,23 @@ score = np.mean(predicted == twenty_test.target)
 print(f'The score of SGDClassifier is {score}')
 print(metrics.classification_report(twenty_test.target, predicted, target_names=twenty_test.target_names))
 print(metrics.confusion_matrix(twenty_test.target, predicted))
+
+'''
+The score of MultinomialNB is 0.8348868175765646
+The score of SGDClassifier is 0.9101198402130493
+                        precision    recall  f1-score   support
+
+           alt.atheism       0.95      0.80      0.87       319
+         comp.graphics       0.87      0.98      0.92       389
+               sci.med       0.94      0.89      0.91       396
+soc.religion.christian       0.90      0.95      0.93       398
+
+              accuracy                           0.91      1502
+             macro avg       0.91      0.91      0.91      1502
+          weighted avg       0.91      0.91      0.91      1502
+
+[[256  11  16  36]
+ [  4 380   3   2]
+ [  5  35 353   3]
+ [  5  11   4 378]]
+'''
