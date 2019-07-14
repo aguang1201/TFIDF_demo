@@ -43,6 +43,7 @@ print(len(train_texts), len(test_texts))
 text_clf = Pipeline([('tfidf', TfidfVectorizer(max_features=10000)),
                      ('clf', MultinomialNB())])
 text_clf = text_clf.fit(train_texts, train_labels)
+#score = text_clf.score(test_texts, test_labels)
 predicted = text_clf.predict(test_texts)
 print("MultinomialNB准确率为：", np.mean(predicted == test_labels))
 
