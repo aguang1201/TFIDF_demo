@@ -20,15 +20,6 @@ text_clf = Pipeline([('vect', CountVectorizer()),
                                            alpha=1e-3, random_state=42,
                                            max_iter=5, tol=None)),
                     ])
-text_clf.fit(twenty_train.data, twenty_train.target)
-
-#predict the test data with the pretrained model
-docs_test = twenty_test.data
-predicted = text_clf.predict(docs_test)
-score = np.mean(predicted == twenty_test.target)
-print(f'The score of SGDClassifier is {score}')
-print(metrics.classification_report(twenty_test.target, predicted, target_names=twenty_test.target_names))
-print(metrics.confusion_matrix(twenty_test.target, predicted))
 
 parameters = {'vect__ngram_range': [(1, 1), (1, 2)],
               'tfidf__use_idf': (True, False),
@@ -36,9 +27,17 @@ parameters = {'vect__ngram_range': [(1, 1), (1, 2)],
              }
 gs_clf = GridSearchCV(text_clf, parameters, n_jobs=-1)
 gs_clf = gs_clf.fit(twenty_train.data[:400], twenty_train.target[:400])
-print(gs_clf.best_score_)
+print(f'best score is {gs_clf.best_score_}')
 for param_name in sorted(parameters.keys()):
     print("%s: %r" % (param_name, gs_clf.best_params_[param_name]))
 
 #predict
-print(twenty_train.target_names[gs_clf.predict(['God is love'])[0]])
+print(f"The predict result is : {twenty_train.target_names[gs_clf.predict(['God is love'])[0]]}")
+
+'''
+best score is 0.895
+clf__alpha: 0.001
+tfidf__use_idf: True
+vect__ngram_range: (1, 2)
+The predict result is : soc.religion.christian
+'''
