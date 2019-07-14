@@ -29,7 +29,7 @@ selected_categories = [
 newsgroups_train = fetch_20newsgroups(subset='train',
                                       categories=selected_categories,
                                       remove=('headers', 'footers', 'quotes'))
-newsgroups_test = fetch_20newsgroups(subset='train',
+newsgroups_test = fetch_20newsgroups(subset='test',
                                      categories=selected_categories,
                                      remove=('headers', 'footers', 'quotes'))
 
